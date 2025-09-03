@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "post_tool_use": {
+      "enabled": true,
+      "script": ".claude/hooks/adr_post_hook.py",
+      "description": "Generate ADRs for significant architectural decisions made by agents"
+    },
+    "pre_completion": {
+      "enabled": true,
+      "script": ".claude/hooks/adr_completion_hook.py", 
+      "description": "Generate phase completion ADRs"
+    }
+  },
+  "adr_config": {
+    "enabled": true,
+    "auto_generate": true,
+    "track_phases": true,
+    "track_decisions": true,
+    "min_significance_score": 7,
+    "adr_directory": "adr",
+    "template_file": "adr/adr-YYYYMMDD-nn-short-title.md"
+  }
+}

@@ -1,0 +1,3 @@
+# Database subscribers directory
+# This directory will contain TypeORM subscriber files
+# Do not delete this file - it ensures the directory is tracked by git

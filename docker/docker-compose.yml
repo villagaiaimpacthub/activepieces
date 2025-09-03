@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: activepieces_sop_postgres
+    environment:
+      POSTGRES_DB: activepieces_sop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d/
+    networks:
+      - activepieces-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: activepieces_sop_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - activepieces-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: activepieces_sop_backend
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/activepieces_sop
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=development-jwt-secret-key
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../src:/app/src
+      - ../package.json:/app/package.json
+      - ../tsconfig.json:/app/tsconfig.json
+      - ../nx.json:/app/nx.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - activepieces-network
+    command: npm run dev:backend
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: activepieces_sop_frontend
+    environment:
+      - NODE_ENV=development
+      - API_URL=http://backend:3000
+    ports:
+      - "4200:4200"
+    volumes:
+      - ../src:/app/src
+      - ../package.json:/app/package.json
+      - ../tsconfig.json:/app/tsconfig.json
+      - ../nx.json:/app/nx.json
+      - ../angular.json:/app/angular.json
+    depends_on:
+      - backend
+    networks:
+      - activepieces-network
+    command: npm run dev:frontend
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: activepieces_sop_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@activepieces.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - activepieces-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  pgadmin_data:
+
+networks:
+  activepieces-network:
+    driver: bridge

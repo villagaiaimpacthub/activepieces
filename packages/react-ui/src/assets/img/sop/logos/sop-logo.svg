@@ -1,0 +1,8 @@
+<svg width="120" height="40" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- SOP Designer Logo Placeholder -->
+  <rect width="120" height="40" fill="#2563EB" rx="6"/>
+  <rect x="8" y="8" width="24" height="24" fill="white" rx="4"/>
+  <path d="M14 16h12m-6-6v12" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  <text x="40" y="14" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="600">SOP</text>
+  <text x="40" y="26" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="8">Designer</text>
+</svg>

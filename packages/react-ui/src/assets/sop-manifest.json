@@ -1,0 +1,109 @@
+{
+  "name": "SOP Designer Assets",
+  "version": "1.0.0",
+  "description": "Asset manifest for SOP Designer customization",
+  "assets": {
+    "logos": {
+      "main": {
+        "path": "img/sop/logos/sop-logo.svg",
+        "type": "svg",
+        "description": "Main SOP Designer logo",
+        "dimensions": "120x40",
+        "usage": ["navbar", "branding", "export-headers"]
+      },
+      "icon": {
+        "path": "img/sop/logos/sop-icon.svg",
+        "type": "svg",
+        "description": "SOP Designer icon",
+        "dimensions": "32x32",
+        "usage": ["favicon", "toolbar", "notifications"]
+      }
+    },
+    "icons": {
+      "process-step": {
+        "path": "img/sop/icons/process-step.svg",
+        "type": "svg",
+        "description": "Generic process step icon",
+        "dimensions": "24x24",
+        "color": "#6B7280",
+        "usage": ["palette", "canvas", "export"]
+      },
+      "human-task": {
+        "path": "img/sop/icons/human-task.svg",
+        "type": "svg",
+        "description": "Human task step icon",
+        "dimensions": "24x24",
+        "color": "#F59E0B",
+        "usage": ["palette", "canvas", "export"]
+      },
+      "compliance-check": {
+        "path": "img/sop/icons/compliance-check.svg",
+        "type": "svg",
+        "description": "Compliance verification step icon",
+        "dimensions": "24x24",
+        "color": "#10B981",
+        "usage": ["palette", "canvas", "export"]
+      },
+      "integration": {
+        "path": "img/sop/icons/integration.svg",
+        "type": "svg",
+        "description": "System integration step icon",
+        "dimensions": "24x24",
+        "color": "#8B5CF6",
+        "usage": ["palette", "canvas", "export"]
+      }
+    },
+    "themes": {
+      "sop-theme": {
+        "path": "styles/sop-theme.css",
+        "type": "css",
+        "description": "SOP brand colors and component styles",
+        "variables": {
+          "primary": "#2563EB",
+          "accent": "#64748B",
+          "success": "#10B981",
+          "warning": "#F59E0B",
+          "error": "#EF4444"
+        }
+      }
+    }
+  },
+  "buildConfig": {
+    "publicPath": "/src/assets/",
+    "optimization": {
+      "svgOptimization": true,
+      "imageMinification": false,
+      "cssMinification": true
+    },
+    "bundling": {
+      "inlineSmallAssets": true,
+      "assetThreshold": 4096,
+      "generateHashes": false
+    }
+  },
+  "integration": {
+    "vite": {
+      "aliasPatterns": [
+        "@sop/assets",
+        "@sop/icons",
+        "@sop/themes"
+      ],
+      "staticCopy": true,
+      "hotReload": true
+    },
+    "typescript": {
+      "generateTypes": true,
+      "exportConstants": true
+    }
+  },
+  "metadata": {
+    "created": "2025-01-03",
+    "author": "SPARC Agent 6",
+    "purpose": "SOP Designer asset pipeline setup",
+    "dependencies": [
+      "tailwindcss",
+      "vite",
+      "react"
+    ]
+  }
+}

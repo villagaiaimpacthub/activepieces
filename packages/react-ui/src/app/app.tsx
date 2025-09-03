@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { EmbeddingProvider } from '@/components/embed-provider';
 import TelemetryProvider from '@/components/telemetry-provider';
 import { ThemeProvider } from '@/components/theme-provider';
+import { SOPThemeProvider } from '@/components/sop/sop-theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar-shadcn';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -75,11 +76,13 @@ export function App() {
                 <TooltipProvider>
                   <React.Fragment key={i18n.language}>
                     <ThemeProvider storageKey="vite-ui-theme">
-                      <SidebarProvider>
-                        <ApRouter />
-                        <Toaster />
-                        <ChangelogProvider />
-                      </SidebarProvider>
+                      <SOPThemeProvider enableSOPBranding={true}>
+                        <SidebarProvider>
+                          <ApRouter />
+                          <Toaster />
+                          <ChangelogProvider />
+                        </SidebarProvider>
+                      </SOPThemeProvider>
                     </ThemeProvider>
                   </React.Fragment>
                 </TooltipProvider>

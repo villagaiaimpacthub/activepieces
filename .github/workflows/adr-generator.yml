@@ -1,0 +1,147 @@
+name: Auto-generate ADR
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'packages/**'
+      - 'src/**'
+      - 'adr/**'
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'ADR Title'
+        required: true
+        default: 'Manual ADR Generation'
+      context:
+        description: 'Decision Context'
+        required: false
+        default: 'Manual ADR creation requested'
+
+jobs:
+  generate-adr:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Create adr directory if not exists
+        run: mkdir -p adr
+      
+      - name: Generate ADR for merged PR
+        if: github.event_name == 'pull_request'
+        run: |
+          cd "${{ github.workspace }}"
+          
+          # Get PR information
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          # Generate date and number
+          DATE=$(date +%Y%m%d)
+          NUMBER=$(printf "%03d" $(($(ls adr/adr-*.md 2>/dev/null | wc -l) + 1)))
+          
+          # Clean title for filename
+          CLEAN_TITLE=$(echo "$PR_TITLE" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+          
+          # Create ADR filename
+          ADR_FILE="adr/adr-${DATE}-${NUMBER}-${CLEAN_TITLE}.md"
+          
+          # Generate ADR content
+          cat > "$ADR_FILE" << EOF
+          # ADR-${DATE}-${NUMBER}: ${PR_TITLE}
+          
+          **Status:** Accepted  
+          **Date:** $(date +%Y-%m-%d)  
+          **Authors:** claude-code agent (PR #${PR_NUMBER})  
+          
+          ## Context
+          
+          Pull request #${PR_NUMBER} was merged containing architectural changes.
+          
+          ${PR_BODY}
+          
+          ## Decision
+          
+          Implemented changes from PR #${PR_NUMBER}: ${PR_TITLE}
+          
+          Files modified:
+          $(git diff --name-only HEAD~1..HEAD | sed 's/^/- /')
+          
+          ## Alternatives Considered
+          
+          Alternative approaches were considered during the PR review process.
+          
+          ## Consequences
+          
+          - Architecture has been updated with the changes from this PR
+          - System functionality has been enhanced
+          - Future development can build upon these changes
+          
+          ## References
+          
+          - Pull Request: #${PR_NUMBER}
+          - Commit: ${{ github.sha }}
+          EOF
+          
+          echo "Generated ADR: $ADR_FILE"
+      
+      - name: Generate manual ADR
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          cd "${{ github.workspace }}"
+          node scripts/generate-adr.js "${{ github.event.inputs.title }}" "${{ github.event.inputs.context }}"
+      
+      - name: Generate ADR from recent changes
+        if: github.event_name == 'push'
+        run: |
+          cd "${{ github.workspace }}"
+          node scripts/generate-adr.js --git
+      
+      - name: Commit and push ADR
+        run: |
+          git config user.name "claude-code-bot"
+          git config user.email "claude-code-bot@users.noreply.github.com"
+          
+          if [[ -n $(git status --porcelain adr/) ]]; then
+            git add adr/
+            git commit -m "docs(adr): auto-generate ADR for recent changes
+            
+            🤖 Generated with Claude Code
+            
+            Co-Authored-By: Claude <noreply@anthropic.com>"
+            git push
+            
+            echo "ADR committed and pushed successfully"
+          else
+            echo "No ADR changes to commit"
+          fi
+      
+      - name: Create summary
+        run: |
+          echo "## ADR Generation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "✅ ADR automation workflow completed" >> $GITHUB_STEP_SUMMARY
+          echo "📁 ADRs are available in the /adr directory" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 [View ADR Index](../adr/README.md)" >> $GITHUB_STEP_SUMMARY

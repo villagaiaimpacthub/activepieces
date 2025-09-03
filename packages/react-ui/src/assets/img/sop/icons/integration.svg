@@ -1,0 +1,8 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Integration Icon -->
+  <circle cx="6" cy="12" r="3" fill="none" stroke="#8B5CF6" stroke-width="2"/>
+  <circle cx="18" cy="12" r="3" fill="none" stroke="#8B5CF6" stroke-width="2"/>
+  <path d="M9 12h6" stroke="#8B5CF6" stroke-width="2"/>
+  <path d="M12 9v6" stroke="#8B5CF6" stroke-width="2"/>
+  <circle cx="12" cy="12" r="1" fill="#8B5CF6"/>
+</svg>

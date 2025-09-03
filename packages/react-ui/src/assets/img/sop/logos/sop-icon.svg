@@ -1,0 +1,7 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- SOP Icon for favicon and navigation -->
+  <rect width="32" height="32" fill="#2563EB" rx="6"/>
+  <rect x="4" y="4" width="24" height="24" fill="white" rx="4"/>
+  <path d="M10 16h12m-6-6v12" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="16" cy="20" r="2" fill="#2563EB"/>
+</svg>

@@ -60,6 +60,12 @@ export default defineConfig(({ command, mode }) => {
           __dirname,
           '../../packages/pieces/community/framework/src',
         ),
+        // SOP Asset Aliases
+        '@sop/assets': path.resolve(__dirname, './src/assets'),
+        '@sop/icons': path.resolve(__dirname, './src/assets/img/sop/icons'),
+        '@sop/logos': path.resolve(__dirname, './src/assets/img/sop/logos'),
+        '@sop/themes': path.resolve(__dirname, './src/styles'),
+        '@sop/lib': path.resolve(__dirname, './src/lib'),
       },
     },
     plugins: [

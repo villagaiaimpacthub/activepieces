@@ -1,0 +1,278 @@
+/* SOP Theme Variables and Overrides */
+
+/* SOP Brand Colors */
+:root {
+  /* Primary SOP Brand Colors */
+  --sop-primary-50: #eff6ff;
+  --sop-primary-100: #dbeafe;
+  --sop-primary-200: #bfdbfe;
+  --sop-primary-300: #93c5fd;
+  --sop-primary-400: #60a5fa;
+  --sop-primary-500: #3b82f6;
+  --sop-primary-600: #2563eb;
+  --sop-primary-700: #1d4ed8;
+  --sop-primary-800: #1e40af;
+  --sop-primary-900: #1e3a8a;
+  
+  /* SOP Accent Colors */
+  --sop-accent-50: #f8fafc;
+  --sop-accent-100: #f1f5f9;
+  --sop-accent-200: #e2e8f0;
+  --sop-accent-300: #cbd5e1;
+  --sop-accent-400: #94a3b8;
+  --sop-accent-500: #64748b;
+  --sop-accent-600: #475569;
+  --sop-accent-700: #334155;
+  --sop-accent-800: #1e293b;
+  --sop-accent-900: #0f172a;
+  
+  /* SOP Process Step Colors */
+  --sop-step-primary: #2563eb;
+  --sop-step-human: #f59e0b;
+  --sop-step-compliance: #10b981;
+  --sop-step-integration: #8b5cf6;
+  --sop-step-conditional: #ef4444;
+  
+  /* SOP UI Overrides */
+  --sop-sidebar-bg: var(--sop-accent-50);
+  --sop-sidebar-border: var(--sop-accent-200);
+  --sop-canvas-bg: #ffffff;
+  --sop-canvas-grid: var(--sop-accent-100);
+  --sop-panel-bg: var(--sop-accent-50);
+  --sop-panel-border: var(--sop-accent-200);
+  
+  /* SOP Text Colors */
+  --sop-text-primary: var(--sop-accent-900);
+  --sop-text-secondary: var(--sop-accent-600);
+  --sop-text-disabled: var(--sop-accent-400);
+  --sop-text-inverse: #ffffff;
+  
+  /* Override existing primary with SOP brand */
+  --primary: var(--sop-primary-600);
+  --primary-100: var(--sop-primary-100);
+  --primary-300: var(--sop-primary-700);
+  --primary-foreground: var(--sop-text-inverse);
+}
+
+/* SOP Dark Theme */
+.dark {
+  --sop-primary-50: #1e3a8a;
+  --sop-primary-100: #1d4ed8;
+  --sop-primary-200: #2563eb;
+  --sop-primary-300: #3b82f6;
+  --sop-primary-400: #60a5fa;
+  --sop-primary-500: #93c5fd;
+  --sop-primary-600: #bfdbfe;
+  --sop-primary-700: #dbeafe;
+  --sop-primary-800: #eff6ff;
+  --sop-primary-900: #f8fafc;
+  
+  --sop-accent-50: #0f172a;
+  --sop-accent-100: #1e293b;
+  --sop-accent-200: #334155;
+  --sop-accent-300: #475569;
+  --sop-accent-400: #64748b;
+  --sop-accent-500: #94a3b8;
+  --sop-accent-600: #cbd5e1;
+  --sop-accent-700: #e2e8f0;
+  --sop-accent-800: #f1f5f9;
+  --sop-accent-900: #f8fafc;
+  
+  --sop-sidebar-bg: var(--sop-accent-100);
+  --sop-sidebar-border: var(--sop-accent-300);
+  --sop-canvas-bg: var(--sop-accent-50);
+  --sop-canvas-grid: var(--sop-accent-200);
+  --sop-panel-bg: var(--sop-accent-100);
+  --sop-panel-border: var(--sop-accent-300);
+  
+  --sop-text-primary: var(--sop-accent-900);
+  --sop-text-secondary: var(--sop-accent-600);
+  --sop-text-disabled: var(--sop-accent-400);
+}
+
+/* SOP Branded Mode Overrides */
+.sop-branded {
+  /* Override default primary colors with SOP branding */
+  --primary: var(--sop-primary-600);
+  --primary-100: var(--sop-primary-100);
+  --primary-300: var(--sop-primary-700);
+  --primary-foreground: var(--sop-text-inverse);
+
+  /* Override sidebar colors */
+  --sidebar-background: var(--sop-sidebar-bg);
+  --sidebar-border: var(--sop-sidebar-border);
+  --sidebar-primary: var(--sop-primary-600);
+}
+
+/* SOP Branded Dark Mode */
+.sop-branded.dark {
+  --sidebar-background: var(--sop-accent-100);
+  --sidebar-border: var(--sop-accent-300);
+}
+
+/* SOP Component Specific Styles */
+
+/* SOP Navigation Bar */
+.sop-navbar,
+.sop-branded .navbar {
+  background: linear-gradient(135deg, var(--sop-primary-600), var(--sop-primary-700));
+  border-bottom: 1px solid var(--sop-primary-500);
+}
+
+.sop-navbar .sop-logo,
+.sop-branded .navbar .logo {
+  filter: brightness(1.1);
+}
+
+/* SOP Sidebar */
+.sop-sidebar,
+.sop-branded .sidebar,
+.sop-branded [data-sidebar] {
+  background: var(--sop-sidebar-bg) !important;
+  border-right: 1px solid var(--sop-sidebar-border) !important;
+}
+
+/* SOP Branded Button Overrides */
+.sop-branded .btn-primary,
+.sop-branded button[data-variant="default"],
+.sop-branded .bg-primary {
+  background-color: var(--sop-primary-600) !important;
+  border-color: var(--sop-primary-600) !important;
+}
+
+.sop-branded .btn-primary:hover,
+.sop-branded button[data-variant="default"]:hover {
+  background-color: var(--sop-primary-700) !important;
+  border-color: var(--sop-primary-700) !important;
+}
+
+/* SOP Branded Text Colors */
+.sop-branded .text-primary {
+  color: var(--sop-primary-600) !important;
+}
+
+.sop-branded .text-foreground {
+  color: var(--sop-text-primary) !important;
+}
+
+/* SOP Branded Canvas */
+.sop-branded .canvas,
+.sop-branded .react-flow,
+.sop-branded .flow-canvas {
+  background: var(--sop-canvas-bg) !important;
+}
+
+.sop-pieces-palette {
+  background: var(--sop-panel-bg);
+  border: 1px solid var(--sop-panel-border);
+  border-radius: 8px;
+}
+
+/* SOP Canvas */
+.sop-canvas {
+  background: var(--sop-canvas-bg);
+  background-image: 
+    radial-gradient(circle, var(--sop-canvas-grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* SOP Process Step Colors */
+.sop-step-process {
+  --step-color: var(--sop-step-primary);
+  --step-bg: color-mix(in srgb, var(--sop-step-primary) 10%, transparent);
+  --step-border: var(--sop-step-primary);
+}
+
+.sop-step-human {
+  --step-color: var(--sop-step-human);
+  --step-bg: color-mix(in srgb, var(--sop-step-human) 10%, transparent);
+  --step-border: var(--sop-step-human);
+}
+
+.sop-step-compliance {
+  --step-color: var(--sop-step-compliance);
+  --step-bg: color-mix(in srgb, var(--sop-step-compliance) 10%, transparent);
+  --step-border: var(--sop-step-compliance);
+}
+
+.sop-step-integration {
+  --step-color: var(--sop-step-integration);
+  --step-bg: color-mix(in srgb, var(--sop-step-integration) 10%, transparent);
+  --step-border: var(--sop-step-integration);
+}
+
+.sop-step-conditional {
+  --step-color: var(--sop-step-conditional);
+  --step-bg: color-mix(in srgb, var(--sop-step-conditional) 10%, transparent);
+  --step-border: var(--sop-step-conditional);
+}
+
+/* SOP Export Panel */
+.sop-export-panel {
+  background: var(--sop-panel-bg);
+  border-left: 1px solid var(--sop-panel-border);
+}
+
+/* SOP Branding Elements */
+.sop-brand-text {
+  color: var(--sop-primary-600);
+  font-weight: 600;
+}
+
+.sop-brand-accent {
+  color: var(--sop-accent-600);
+}
+
+/* Animation and transitions for SOP elements */
+.sop-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sop-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--sop-primary-600) 20%, transparent);
+}
+
+/* Responsive SOP layout */
+@media (max-width: 768px) {
+  .sop-sidebar {
+    position: fixed;
+    top: 64px;
+    left: -100%;
+    height: calc(100vh - 64px);
+    width: 280px;
+    z-index: 50;
+    transition: left 0.3s ease;
+  }
+  
+  .sop-sidebar.open {
+    left: 0;
+  }
+  
+  .sop-canvas {
+    margin-left: 0;
+  }
+}
+
+/* SOP Focus and accessibility */
+.sop-focus:focus-visible {
+  outline: 2px solid var(--sop-primary-600);
+  outline-offset: 2px;
+}
+
+/* SOP Loading states */
+.sop-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--sop-accent-200) 25%,
+    var(--sop-accent-100) 50%,
+    var(--sop-accent-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: sop-skeleton-loading 1.5s infinite;
+}
+
+@keyframes sop-skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

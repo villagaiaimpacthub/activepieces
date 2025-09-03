@@ -1,0 +1,320 @@
+/* SOP Export Template Styles */
+/* Used for generating formatted SOP documents */
+
+/* Page Layout */
+@page {
+  margin: 1in;
+  size: letter;
+}
+
+/* Document Structure */
+.sop-document {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.sop-header {
+  border-bottom: 3px solid #2563eb;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.sop-logo {
+  max-height: 60px;
+  margin-bottom: 1rem;
+}
+
+.sop-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin: 0;
+}
+
+.sop-subtitle {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0.5rem 0 0 0;
+}
+
+/* Metadata Section */
+.sop-metadata {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.sop-meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.sop-meta-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sop-meta-value {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Table of Contents */
+.sop-toc {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sop-toc-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.sop-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sop-toc-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sop-toc-item:last-child {
+  border-bottom: none;
+}
+
+.sop-toc-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.sop-toc-link:hover {
+  color: #1d4ed8;
+}
+
+/* Process Steps */
+.sop-process {
+  margin-bottom: 3rem;
+}
+
+.sop-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  margin: 2rem 0 1rem 0;
+}
+
+.sop-step {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.sop-step-number {
+  position: absolute;
+  top: -12px;
+  left: 1.5rem;
+  background: #2563eb;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.sop-step-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+  padding-left: 2rem;
+}
+
+.sop-step-description {
+  color: #4b5563;
+  margin: 0 0 1rem 0;
+}
+
+.sop-step-details {
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Step Type Colors */
+.sop-step.process {
+  border-left: 4px solid #2563eb;
+}
+
+.sop-step.process .sop-step-number {
+  background: #2563eb;
+}
+
+.sop-step.human {
+  border-left: 4px solid #f59e0b;
+}
+
+.sop-step.human .sop-step-number {
+  background: #f59e0b;
+}
+
+.sop-step.compliance {
+  border-left: 4px solid #10b981;
+}
+
+.sop-step.compliance .sop-step-number {
+  background: #10b981;
+}
+
+.sop-step.integration {
+  border-left: 4px solid #8b5cf6;
+}
+
+.sop-step.integration .sop-step-number {
+  background: #8b5cf6;
+}
+
+/* Property Tables */
+.sop-properties {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.sop-properties th,
+.sop-properties td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sop-properties th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.sop-properties td {
+  color: #6b7280;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+/* Validation Results */
+.sop-validation {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 2rem 0;
+}
+
+.sop-validation.error {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.sop-validation-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.sop-validation.success .sop-validation-title {
+  color: #059669;
+}
+
+.sop-validation.error .sop-validation-title {
+  color: #dc2626;
+}
+
+/* Footer */
+.sop-footer {
+  border-top: 2px solid #e2e8f0;
+  padding-top: 2rem;
+  margin-top: 3rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.sop-generated-info {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* Print Styles */
+@media print {
+  .sop-document {
+    max-width: none;
+  }
+  
+  .sop-step {
+    break-inside: avoid;
+  }
+  
+  .sop-toc-link {
+    color: #1f2937 !important;
+  }
+  
+  .sop-validation {
+    border: 1px solid #d1d5db !important;
+    background: #f9fafb !important;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sop-metadata {
+    grid-template-columns: 1fr;
+  }
+  
+  .sop-step {
+    padding: 1rem;
+  }
+  
+  .sop-step-title {
+    padding-left: 1rem;
+  }
+  
+  .sop-step-number {
+    left: 1rem;
+  }
+}

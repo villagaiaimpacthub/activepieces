@@ -1,0 +1,52 @@
+# Multi-stage production build
+
+# Base stage with common dependencies
+FROM node:18-alpine AS base
+WORKDIR /app
+RUN apk add --no-cache curl
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
+
+# Dependencies stage
+FROM base AS dependencies
+RUN npm ci --only=production=false --frozen-lockfile
+
+# Backend build stage
+FROM dependencies AS backend-build
+COPY src/ ./src/
+COPY webpack.config.js ./
+RUN npm run build:backend
+
+# Frontend build stage
+FROM dependencies AS frontend-build
+COPY src/ ./src/
+COPY angular.json ./
+RUN npm run build:frontend
+
+# Backend production stage
+FROM node:18-alpine AS backend
+WORKDIR /app
+RUN apk add --no-cache curl
+COPY package*.json ./
+RUN npm ci --only=production --frozen-lockfile && npm cache clean --force
+COPY --from=backend-build /app/dist/backend ./dist/
+COPY src/backend/database/migrations ./src/backend/database/migrations/
+
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+USER node
+CMD ["node", "dist/main.js"]
+
+# Frontend production stage
+FROM nginx:alpine AS frontend
+COPY --from=frontend-build /app/dist/frontend /usr/share/nginx/html
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD curl -f http://localhost:80 || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]

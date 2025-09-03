@@ -1,0 +1,11 @@
+{
+  "name": "adr-automation-scripts",
+  "version": "1.0.0",
+  "description": "ADR automation scripts for Activepieces SOP Tool",
+  "scripts": {
+    "generate-adr": "node generate-adr.js",
+    "test-adr": "node generate-adr.js \"Test ADR\" \"Testing ADR generation\" \"Test decision\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
