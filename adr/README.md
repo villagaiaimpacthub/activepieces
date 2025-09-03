@@ -10,6 +10,7 @@ Architecture Decision Records (ADRs) document significant architectural decision
 
 | ADR | Date | Status | Title | Summary |
 |-----
+| [ADR-006](adr-20250903-006-recent-development-changes.md) | 2025-09-03 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-005](adr-20250903-005-recent-development-changes.md) | 2025-09-03 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-004](adr-20250903-004-phase-completion.md) | 2025-09-03 | Accepted | Phase Completion | Auto-generated ADR |
 | [ADR-003](adr-20250903-003-phase-2-group-e-completion---navigation-and-branding.md) | 2025-09-03 | Accepted | Phase 2 GROUP E Completion - Navigation and Branding | Auto-generated ADR ||------|--------|-------|---------|
