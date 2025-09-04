@@ -24,7 +24,16 @@
     "pull-i18n": "crowdin pull --config crowdin.yml",
     "push-i18n": "crowdin upload sources",
     "i18n:extract": "i18next --config packages/react-ui/i18next-parser.config.js",
-    "bump-translated-pieces": "npx ts-node --project tools/tsconfig.tools.json tools/scripts/pieces/bump-translated-pieces.ts"
+    "bump-translated-pieces": "npx ts-node --project tools/tsconfig.tools.json tools/scripts/pieces/bump-translated-pieces.ts",
+    "test:unit": "jest --config jest.config.js --testPathIgnorePatterns=e2e",
+    "test:e2e": "ts-node tests/run-e2e.ts",
+    "test:e2e:ui": "playwright test --project=chromium",
+    "test:e2e:api": "playwright test --grep=\"API|Integration\"",
+    "test:e2e:database": "playwright test --grep=\"Database\"",
+    "test:e2e:full": "ts-node tests/run-e2e.ts --suites=database,api,integration,ui,export",
+    "test:e2e:ci": "ts-node tests/run-e2e.ts --env=ci --browsers=chromium --sequential",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "private": true,
   "dependencies": {

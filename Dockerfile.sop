@@ -1,0 +1,146 @@
+# ActivePieces SOP Tool - Production Dockerfile
+# Multi-stage build for optimized production deployment
+
+# Stage 1: Build Environment
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache \
+    git \
+    python3 \
+    make \
+    g++ \
+    cairo-dev \
+    jpeg-dev \
+    pango-dev \
+    giflib-dev \
+    librsvg-dev \
+    pixman-dev
+
+# Copy package files
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
+COPY .eslintrc.json ./
+
+# Copy workspace packages
+COPY packages/pieces/community/sop-framework ./packages/pieces/community/sop-framework/
+COPY packages/pieces/community/sop-approval-gate ./packages/pieces/community/sop-approval-gate/
+COPY packages/server ./packages/server/
+COPY packages/shared ./packages/shared/
+COPY packages/ui ./packages/ui/
+COPY packages/react-ui ./packages/react-ui/
+COPY packages/engine ./packages/engine/
+
+# Install dependencies
+RUN npm ci --frozen-lockfile
+
+# Build the application
+RUN npm run build
+
+# Build SOP pieces specifically
+RUN npx nx build sop-framework
+RUN npx nx build sop-approval-gate
+
+# Stage 2: Production Runtime
+FROM node:20-alpine AS production
+
+# Set working directory
+WORKDIR /app
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    curl \
+    ca-certificates \
+    tzdata \
+    cairo \
+    jpeg \
+    pango \
+    giflib \
+    librsvg \
+    pixman \
+    ttf-dejavu \
+    fontconfig
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S activepieces -u 1001
+
+# Copy built application from builder stage
+COPY --from=builder --chown=activepieces:nodejs /app/dist ./dist/
+COPY --from=builder --chown=activepieces:nodejs /app/node_modules ./node_modules/
+COPY --from=builder --chown=activepieces:nodejs /app/package*.json ./
+
+# Copy SOP-specific configuration and assets
+COPY --chown=activepieces:nodejs docker/sop/ ./docker/sop/
+COPY --chown=activepieces:nodejs scripts/sop/ ./scripts/sop/
+
+# Create necessary directories
+RUN mkdir -p /app/uploads/sop /app/logs /app/backups/sop && \
+    chown -R activepieces:nodejs /app/uploads /app/logs /app/backups
+
+# Set up environment
+ENV NODE_ENV=production
+ENV AP_ENVIRONMENT=prod
+ENV SOP_UPLOAD_PATH=/app/uploads/sop
+ENV SOP_LOG_PATH=/app/logs
+ENV SOP_BACKUP_PATH=/app/backups/sop
+
+# Expose ports
+EXPOSE 3000 9090
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Switch to non-root user
+USER activepieces
+
+# Start the application
+CMD ["node", "dist/packages/server/api/main.js"]
+
+# Stage 3: Development Environment (optional)
+FROM node:20-alpine AS development
+
+WORKDIR /app
+
+# Install all dependencies including dev
+RUN apk add --no-cache \
+    git \
+    python3 \
+    make \
+    g++ \
+    cairo-dev \
+    jpeg-dev \
+    pango-dev \
+    giflib-dev \
+    librsvg-dev \
+    pixman-dev \
+    curl
+
+# Copy package files
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
+COPY .eslintrc.json ./
+
+# Install all dependencies (including dev)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Set development environment
+ENV NODE_ENV=development
+ENV AP_ENVIRONMENT=dev
+ENV DEBUG=activepieces:*
+ENV SOP_ENABLE_DEBUG_ROUTES=true
+
+# Expose ports for development
+EXPOSE 3000 4200 9090
+
+# Development command with hot reload
+CMD ["npm", "run", "dev"]
