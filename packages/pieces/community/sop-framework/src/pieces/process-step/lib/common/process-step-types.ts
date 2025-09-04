@@ -93,8 +93,8 @@ export const ProcessStepEvent = Type.Object({
         action: Type.String(),
         userId: Type.String(),
         details: Type.Record(Type.String(), Type.Unknown())
-    })), { description: 'Audit trail entries' }),
-    customVariables: Type.Optional(Type.Record(Type.String(), Type.Unknown(), { description: 'Custom variables' }))
+    }))),
+    customVariables: Type.Optional(Type.Record(Type.String(), Type.Unknown()))
 });
 
 export type ProcessStepEvent = Static<typeof ProcessStepEvent>;

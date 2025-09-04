@@ -9,7 +9,7 @@
  * - Integration with approval workflows
  */
 
-import { createAction, Property, PieceAuth, Validators } from '@activepieces/pieces-framework';
+import { createAction, Property, PieceAuth } from '@activepieces/pieces-framework';
 import { PieceCategory } from '@activepieces/shared';
 import { BaseSoPiece, BaseSoPieceConfig } from '../framework/base-sop-piece';
 import {
@@ -143,7 +143,6 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
                 displayName: 'Decision Configuration',
                 description: 'Complete decision point configuration including logic and options',
                 required: true,
-                validators: [Validators.object]
             }),
             contextData: Property.Object({
                 displayName: 'Context Data',
@@ -276,7 +275,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
             return await this.evaluateAutomatedDecision(context, props, auditData);
 
         } catch (error) {
-            auditData.decisionMethod = 'error';
+            auditData.decisionMethod = 'escalation';
             
             const evaluationResult: DecisionEvaluationResult = {
                 decisionMade: false,
@@ -290,7 +289,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
                 evaluationResult.requiresEscalation = true;
             }
 
-            throw new Error(`Decision evaluation failed: ${error.message}`);
+            throw new Error(`Decision evaluation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 
@@ -354,7 +353,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
             decisionReason: this.generateDecisionReason(conditionResults, overallResult),
             confidenceScore: this.calculateConfidenceScore(conditionResults),
             evaluationTime: Date.now() - startTime,
-            requiresEscalation: !selectedOption && this.decisionConfig.escalationEnabled,
+            requiresEscalation: !selectedOption && (this.decisionConfig.escalationEnabled || false),
             requiresManualIntervention: !selectedOption,
             auditData
         };
@@ -467,7 +466,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
                 actualValue: undefined,
                 result: false,
                 evaluationTime: Date.now() - startTime,
-                error: error.message
+                error: error instanceof Error ? error.message : 'Unknown error'
             };
         }
     }
@@ -517,7 +516,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
             return Boolean(result);
 
         } catch (error) {
-            throw new Error(`Custom logic evaluation failed: ${error.message}`);
+            throw new Error(`Custom logic evaluation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 
@@ -533,7 +532,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
             const result = new Function('actual', 'expected', `return ${customFunction}`)(actualValue, expectedValue);
             return Boolean(result);
         } catch (error) {
-            throw new Error(`Custom function evaluation failed: ${error.message}`);
+            throw new Error(`Custom function evaluation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 
@@ -744,7 +743,7 @@ export class SOPDecisionPointPiece extends BaseSoPiece {
                     },
                     async run(context) {
                         const piece = new SOPDecisionPointPiece();
-                        return await piece.execute(context.propsValue as DecisionPointProps, context.executedBy || 'system');
+                        return await piece.execute(context.propsValue as DecisionPointProps, 'system');
                     }
                 })
             },

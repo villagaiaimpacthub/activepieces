@@ -130,7 +130,7 @@ export const TemplateVariable = Type.Object({
     name: Type.String({ description: 'Variable name' }),
     value: Type.Union([Type.String(), Type.Number(), Type.Boolean(), Type.Object({})], { description: 'Variable value' }),
     format: Type.Optional(Type.String({ description: 'Format specification (date, currency, etc.)' })),
-    defaultValue: Type.Optional(Type.Union([Type.String(), Type.Number(), Type.Boolean()]), { description: 'Default value if variable is undefined' }),
+    defaultValue: Type.Optional(Type.Union([Type.String(), Type.Number(), Type.Boolean()])),
     required: Type.Boolean({ default: false, description: 'Whether variable is required' }),
     sensitive: Type.Boolean({ default: false, description: 'Whether variable contains sensitive data' })
 });
@@ -168,10 +168,10 @@ export const NotificationRecipient = Type.Object({
     phone: Type.Optional(Type.String({ description: 'Phone number' })),
     userId: Type.Optional(Type.String({ description: 'User ID in the system' })),
     name: Type.Optional(Type.String({ description: 'Recipient name' })),
-    preferredChannel: Type.Optional(Type.Enum(NotificationChannel), { description: 'Preferred notification channel' }),
+    preferredChannel: Type.Optional(Type.Enum(NotificationChannel)),
     timezone: Type.Optional(Type.String({ description: 'Recipient timezone' })),
     locale: Type.Optional(Type.String({ description: 'Recipient locale' })),
-    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown()), { description: 'Additional recipient metadata' }),
+    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown())),
     optOut: Type.Boolean({ default: false, description: 'Whether recipient has opted out' }),
     consentGiven: Type.Boolean({ default: false, description: 'Whether recipient has given consent' }),
     consentDate: Type.Optional(Type.String({ format: 'date-time', description: 'Date consent was given' }))
@@ -205,8 +205,8 @@ export const EscalationRule = Type.Object({
     timeoutMinutes: Type.Optional(Type.Number({ description: 'Time before escalation in minutes' })),
     maxAttempts: Type.Optional(Type.Number({ description: 'Max attempts before escalation' })),
     escalateTo: Type.Array(Type.String(), { description: 'User IDs to escalate to' }),
-    newPriority: Type.Optional(Type.Enum(NotificationPriority), { description: 'Priority after escalation' }),
-    escalationTemplate: Type.Optional(Type.String({ description: 'Template ID for escalation notification' })),
+    newPriority: Type.Optional(Type.Enum(NotificationPriority)),
+    escalationTemplate: Type.Optional(Type.String()),
     isActive: Type.Boolean({ default: true, description: 'Whether rule is active' })
 });
 
@@ -373,19 +373,19 @@ export const NotificationResult = Type.Object({
         framework: Type.Enum(ComplianceFramework),
         status: Type.Enum(SOPComplianceStatus),
         details: Type.Optional(Type.String())
-    })), { description: 'Compliance check results' }),
+    }))),
     auditTrail: Type.Array(Type.Object({
         timestamp: Type.String({ format: 'date-time' }),
         action: Type.String(),
         userId: Type.String(),
         details: Type.Record(Type.String(), Type.Unknown())
     }), { description: 'Audit trail entries' }),
-    analytics: Type.Optional(NotificationAnalytics, { description: 'Analytics data if requested' }),
+    analytics: Type.Optional(NotificationAnalytics),
     scheduledNotifications: Type.Optional(Type.Array(Type.Object({
         scheduledId: Type.String(),
         sendAt: Type.String({ format: 'date-time' }),
         status: Type.String()
-    })), { description: 'Scheduled notifications if applicable' }),
+    }))),
     error: Type.Optional(Type.String({ description: 'Error message if failed' })),
     metadata: Type.Object({
         executedBy: Type.String(),
@@ -429,10 +429,10 @@ export const NotificationError = Type.Object({
     message: Type.String({ description: 'Error message' }),
     field: Type.Optional(Type.String({ description: 'Related field if applicable' })),
     recipientId: Type.Optional(Type.String({ description: 'Related recipient ID if applicable' })),
-    channel: Type.Optional(Type.Enum(NotificationChannel), { description: 'Related channel if applicable' }),
+    channel: Type.Optional(Type.Enum(NotificationChannel)),
     retryable: Type.Boolean({ default: false, description: 'Whether error is retryable' }),
     timestamp: Type.String({ format: 'date-time', description: 'Error timestamp' }),
-    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown()), { description: 'Additional error metadata' })
+    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown()))
 });
 
 export type NotificationError = Static<typeof NotificationError>;
