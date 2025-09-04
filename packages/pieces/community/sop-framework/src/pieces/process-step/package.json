@@ -1,0 +1,48 @@
+{
+  "name": "@activepieces/sop-process-step",
+  "version": "0.1.0",
+  "description": "SOP Process Step Piece - Execute individual process steps within Standard Operating Procedure workflows",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "author": "SPARC-AI-System",
+  "license": "MIT",
+  "keywords": [
+    "activepieces",
+    "sop",
+    "process-step",
+    "workflow",
+    "compliance",
+    "audit",
+    "business-process"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/activepieces/activepieces.git",
+    "directory": "packages/pieces/community/sop-framework/src/pieces/process-step"
+  },
+  "bugs": {
+    "url": "https://github.com/activepieces/activepieces/issues"
+  },
+  "homepage": "https://github.com/activepieces/activepieces#readme",
+  "peerDependencies": {
+    "@activepieces/pieces-framework": "^0.52.0",
+    "@activepieces/shared": "^0.52.0"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.32.0",
+    "nanoid": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "lib/**/*"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

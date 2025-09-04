@@ -20,11 +20,13 @@ export { SOPIntegrationHelpers } from './framework/sop-integration-helpers';
 export * from './types/sop-types';
 export * from './types/sop-workflow-types';
 export * from './types/sop-execution-types';
+export * from './types/sop-decision-types';
 
 // Utilities
 export * from './utils/sop-helpers';
 export * from './utils/sop-validators';
 export * from './utils/sop-formatters';
+export * from './utils/decision-engine-utils';
 
 // Constants
 export * from './constants/sop-constants';
@@ -32,6 +34,15 @@ export * from './constants/sop-constants';
 // Props and Common Elements
 export * from './common/sop-props';
 export * from './common/sop-auth';
+
+// Concrete SOP Pieces
+export { sopProcessStep } from './pieces/process-step';
+export * from './pieces/process-step/lib/common/process-step-types';
+export * from './pieces/process-step/lib/utils/process-step-helpers';
+
+// Decision Point Piece
+export { SOPDecisionPointPiece, sopDecisionPointPiece } from './pieces/decision-point-piece';
+export type { DecisionPointConfig, DecisionPointProps, DecisionEvaluationResult } from './pieces/decision-point-piece';
 
 // Framework Version
 export const SOP_FRAMEWORK_VERSION = '0.1.0';
