@@ -10,6 +10,7 @@ Architecture Decision Records (ADRs) document significant architectural decision
 
 | ADR | Date | Status | Title | Summary |
 |-----
+| [ADR-013](adr-20250904-013-recent-development-changes.md) | 2025-09-04 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-012](adr-20250904-012-recent-development-changes.md) | 2025-09-04 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-011](adr-20250904-011-recent-development-changes.md) | 2025-09-04 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-010](adr-20250904-010-recent-development-changes.md) | 2025-09-04 | Accepted | Recent Development Changes | Auto-generated ADR |
