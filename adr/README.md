@@ -10,6 +10,7 @@ Architecture Decision Records (ADRs) document significant architectural decision
 
 | ADR | Date | Status | Title | Summary |
 |-----
+| [ADR-011](adr-20250904-011-recent-development-changes.md) | 2025-09-04 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-010](adr-20250904-010-recent-development-changes.md) | 2025-09-04 | Accepted | Recent Development Changes | Auto-generated ADR |
 | [ADR-009](adr-20250903-009-recent-development-changes.md) | 2025-09-03 | Accepted | Recent Development Changes | Auto-generated ADR ||------|--------|-------|---------|
 | [ADR-001](adr-20250903-001-sop-customization-approach.md) | 2025-09-03 | Accepted | SOP Customization Approach | Decision to customize Activepieces with SOP-specific theming and terminology |
