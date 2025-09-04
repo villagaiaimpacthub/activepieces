@@ -44,6 +44,30 @@ export * from './pieces/process-step/lib/utils/process-step-helpers';
 export { SOPDecisionPointPiece, sopDecisionPointPiece } from './pieces/decision-point-piece';
 export type { DecisionPointConfig, DecisionPointProps, DecisionEvaluationResult } from './pieces/decision-point-piece';
 
+// Data Form Piece
+export { sopDataForm } from './pieces/data-form';
+export * from './pieces/data-form/lib/common/data-form-types';
+export { DataFormValidator } from './pieces/data-form/lib/validation/data-form-validator';
+export { DataFormHelpers } from './pieces/data-form/lib/utils/data-form-helpers';
+export { dataFormAction } from './pieces/data-form/lib/actions/data-form-action';
+export * from './pieces/data-form/lib/triggers/data-form-trigger';
+
+// Notification Piece
+export { sopNotification } from './pieces/notification';
+export * from './pieces/notification/lib/common/notification-types';
+export { NotificationValidator } from './pieces/notification/lib/validation/notification-validator';
+export { NotificationHelpers } from './pieces/notification/lib/utils/notification-helpers';
+export { notificationAction } from './pieces/notification/lib/actions/notification-action';
+export * from './pieces/notification/lib/triggers/notification-trigger';
+
+// Compliance Piece
+export { sopCompliance } from './pieces/compliance';
+export * from './pieces/compliance/lib/common/compliance-types';
+export { ComplianceValidator } from './pieces/compliance/lib/validation/compliance-validator';
+export { ComplianceHelpers } from './pieces/compliance/lib/utils/compliance-helpers';
+export { complianceAction } from './pieces/compliance/lib/actions/compliance-action';
+export * from './pieces/compliance/lib/triggers/compliance-trigger';
+
 // Framework Version
 export const SOP_FRAMEWORK_VERSION = '0.1.0';
 export const SOP_FRAMEWORK_NAME = 'SOP Framework';
