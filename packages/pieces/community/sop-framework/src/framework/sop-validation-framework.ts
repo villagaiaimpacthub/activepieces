@@ -348,7 +348,7 @@ export class SOPValidationFramework {
                 console.error(`Error executing validation rule ${rule.name}:`, error);
                 result.errors.push({
                     field: 'validation',
-                    message: `Validation rule error: ${error.message}`,
+                    message: `Validation rule error: ${error instanceof Error ? error.message : String(error)}`,
                     code: 'RULE_EXECUTION_ERROR',
                     severity: 'error'
                 });
@@ -407,7 +407,7 @@ export class SOPValidationFramework {
                 console.error(`Error executing compliance rule ${rule.name}:`, error);
                 result.errors.push({
                     field: 'compliance',
-                    message: `Compliance rule error: ${error.message}`,
+                    message: `Compliance rule error: ${error instanceof Error ? error.message : String(error)}`,
                     code: 'COMPLIANCE_RULE_ERROR',
                     severity: 'error'
                 });

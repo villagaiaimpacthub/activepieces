@@ -16,6 +16,7 @@ import {
     EvidenceType,
     ComplianceFinding,
     GapAnalysisResult,
+    ComplianceGap,
     RemediationItem,
     RemediationPriority,
     RiskAssessment,
@@ -27,6 +28,7 @@ import {
     TestResult,
     RemediationOption,
     Recommendation,
+    PlanRisk,
     MonitoringConfig,
     RuleResult,
     ComplianceResult
@@ -164,7 +166,7 @@ export class ComplianceHelpers {
         rules: ComplianceRule[],
         results: RuleResult[]
     ) {
-        const gaps = [];
+        const gaps: ComplianceGap[] = [];
 
         for (const rule of rules) {
             const result = results.find(r => r.ruleId === rule.id);
@@ -602,12 +604,13 @@ export class ComplianceHelpers {
         }
     }
 
-    private static reduceComplexity(complexity: string): string {
+    private static reduceComplexity(complexity: string): 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' {
         switch (complexity) {
             case 'VERY_HIGH': return 'HIGH';
             case 'HIGH': return 'MEDIUM';
             case 'MEDIUM': return 'LOW';
-            default: return complexity;
+            case 'LOW': return 'LOW';
+            default: return 'LOW'; // fallback to LOW for unknown values
         }
     }
 
@@ -848,7 +851,7 @@ export class ComplianceHelpers {
     }
 
     private static identifyPlanRisks(items: RemediationItem[]) {
-        const risks = [];
+        const risks: PlanRisk[] = [];
         
         const criticalCount = items.filter(i => i.priority === RemediationPriority.IMMEDIATE).length;
         if (criticalCount > 3) {

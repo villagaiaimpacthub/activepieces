@@ -48,6 +48,7 @@ import { SidebarInviteUserButton } from './sidebar-invite-user';
 import { SidebarPlatformAdminButton } from './sidebar-platform-admin';
 import { SidebarUser } from './sidebar-user';
 import UsageLimitsButton from './usage-limits-button';
+import { useSOPNavigation } from './sop-navigation-extension';
 
 type Link = {
   icon: React.ReactNode;
@@ -196,6 +197,12 @@ export function SidebarComponent({
   const location = useLocation();
   const { checkAccess } = useAuthorization();
 
+  // SOP Navigation Hook
+  const { sopNavigationGroup, processNavigationGroup, isSOPContext } = useSOPNavigation({
+    enableSOPTerminology: true,
+    showNotifications: true
+  });
+
   const showProjectUsage =
     location.pathname.startsWith('/project') && edition !== ApEdition.COMMUNITY;
   const showConnectionsLink =
@@ -221,6 +228,20 @@ export function SidebarComponent({
                         {item.separatorAfter && <SidebarSeparator />}
                       </React.Fragment>
                     ))}
+
+                    {/* SOP Navigation Groups */}
+                    {sopNavigationGroup && (
+                      <React.Fragment>
+                        {ApSidebarMenuGroup(sopNavigationGroup)}
+                      </React.Fragment>
+                    )}
+
+                    {/* Process-specific Navigation (when in process context) */}
+                    {processNavigationGroup && (
+                      <React.Fragment>
+                        {ApSidebarMenuGroup(processNavigationGroup)}
+                      </React.Fragment>
+                    )}
 
                     <SidebarGroup>
                       <SidebarGroupLabel>{t('Misc')}</SidebarGroupLabel>

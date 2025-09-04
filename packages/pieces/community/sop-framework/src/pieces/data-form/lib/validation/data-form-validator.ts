@@ -260,7 +260,7 @@ export class DataFormValidator {
 
         } catch (error) {
             result.isValid = false;
-            result.errors.push(`Validation error: ${error.message}`);
+            result.errors.push(`Validation error: ${error instanceof Error ? error.message : String(error)}`);
         }
 
         return result;
@@ -590,7 +590,7 @@ export class DataFormValidator {
 
             return Boolean(result);
         } catch (error) {
-            throw new Error(`Custom validation function failed: ${error.message}`);
+            throw new Error(`Custom validation function failed: ${error instanceof Error ? error.message : String(error)}`);
         }
     }
 
@@ -719,7 +719,7 @@ export class DataFormValidator {
             };
         }
 
-        const complianceResults = [];
+        const complianceResults: Array<{ field: string; compliant: boolean; framework: string }> = [];
         
         for (const field of fields) {
             if (field.complianceRequired) {

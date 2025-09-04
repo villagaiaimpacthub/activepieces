@@ -9,11 +9,14 @@
  */
 
 // Core Framework Exports
-export { BaseSoPiece, type BaseSoPieceConfig } from './framework/base-sop-piece';
-export { SOPWorkflowContext, type SOPContextData } from './framework/sop-workflow-context';
+export { BaseSoPiece } from './framework/base-sop-piece';
+export type { BaseSoPieceConfig } from './framework/base-sop-piece';
+export { SOPWorkflowContext } from './framework/sop-workflow-context';
+export type { SOPContextData } from './framework/sop-workflow-context';
 export { SOPPieceRegistry } from './framework/sop-piece-registry';
 export { SOPExecutionEngine } from './framework/sop-execution-engine';
-export { SOPValidationFramework, type SOPValidationRule } from './framework/sop-validation-framework';
+export { SOPValidationFramework } from './framework/sop-validation-framework';
+export type { SOPValidationRule } from './framework/sop-validation-framework';
 export { SOPIntegrationHelpers } from './framework/sop-integration-helpers';
 
 // Types and Interfaces

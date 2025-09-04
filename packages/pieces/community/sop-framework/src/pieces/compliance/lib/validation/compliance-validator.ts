@@ -290,7 +290,7 @@ export class ComplianceValidator {
             warnings.push(...basicValidation.warnings);
 
             // Framework-specific validation
-            const frameworkResults: Record<ComplianceFramework, FrameworkValidationResult> = {};
+            const frameworkResults = {} as Record<ComplianceFramework, FrameworkValidationResult>;
             for (const framework of config.frameworks) {
                 const validator = this.frameworkValidators.get(framework);
                 if (validator) {
@@ -378,7 +378,7 @@ export class ComplianceValidator {
                 errors,
                 warnings,
                 recommendations,
-                frameworkSpecificResults: {},
+                frameworkSpecificResults: {} as Record<ComplianceFramework, FrameworkValidationResult>,
                 ruleValidationResults: [],
                 evidenceValidationResults: [],
                 gapAnalysis: {
@@ -386,7 +386,7 @@ export class ComplianceValidator {
                     highPriorityGaps: 0,
                     mediumPriorityGaps: 0,
                     lowPriorityGaps: 0,
-                    gapsByFramework: {},
+                    gapsByFramework: {} as Record<ComplianceFramework, number>,
                     gapsByCategory: {},
                     estimatedRemediationTime: 0,
                     topGaps: [],
@@ -739,7 +739,7 @@ export class ComplianceValidator {
         const mediumPriorityGaps = ruleResults.filter(r => r.implementationQuality === 'ADEQUATE' || r.implementationQuality === 'POOR').length;
         const lowPriorityGaps = ruleResults.filter(r => r.recommendations.length > 0).length;
 
-        const gapsByFramework: Record<ComplianceFramework, number> = {};
+        const gapsByFramework = {} as Record<ComplianceFramework, number>;
         Object.entries(frameworkResults).forEach(([framework, result]) => {
             gapsByFramework[framework as ComplianceFramework] = result.gaps.length;
         });

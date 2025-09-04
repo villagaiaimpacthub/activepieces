@@ -117,7 +117,7 @@ export const DataFormValidationRule = Type.Object({
         field: Type.String(),
         operator: Type.String(),
         value: Type.Unknown()
-    })), { description: 'Conditions for applying this rule' }),
+    }), { description: 'Conditions for applying this rule' })),
     customFunction: Type.Optional(Type.String({ description: 'Custom validation function (for CUSTOM type)' }))
 });
 
@@ -140,7 +140,7 @@ export const DataFormField = Type.Object({
     hidden: Type.Boolean({ description: 'Whether field is hidden', default: false }),
     
     // Field-specific configurations
-    options: Type.Optional(Type.Array(DataFormFieldOption), { description: 'Options for select/radio/checkbox fields' }),
+    options: Type.Optional(Type.Array(DataFormFieldOption, { description: 'Options for select/radio/checkbox fields' })),
     min: Type.Optional(Type.Number({ description: 'Minimum value (for number/date fields)' })),
     max: Type.Optional(Type.Number({ description: 'Maximum value (for number/date fields)' })),
     step: Type.Optional(Type.Number({ description: 'Step value (for number/slider fields)' })),
@@ -149,16 +149,16 @@ export const DataFormField = Type.Object({
     pattern: Type.Optional(Type.String({ description: 'Regex pattern for validation' })),
     
     // File upload specific
-    acceptedFileTypes: Type.Optional(Type.Array(Type.String()), { description: 'Accepted file types for uploads' }),
+    acceptedFileTypes: Type.Optional(Type.Array(Type.String(), { description: 'Accepted file types for uploads' })),
     maxFileSize: Type.Optional(Type.Number({ description: 'Maximum file size in bytes' })),
     maxFiles: Type.Optional(Type.Number({ description: 'Maximum number of files' })),
     
     // Layout and styling
-    width: Type.Optional(Type.Union([Type.String(), Type.Number()]), { description: 'Field width (CSS or percentage)' }),
+    width: Type.Optional(Type.Union([Type.String(), Type.Number()], { description: 'Field width (CSS or percentage)' })),
     columnSpan: Type.Optional(Type.Number({ description: 'Grid column span', default: 1 })),
     rowSpan: Type.Optional(Type.Number({ description: 'Grid row span', default: 1 })),
     cssClass: Type.Optional(Type.String({ description: 'Custom CSS class' })),
-    style: Type.Optional(Type.Record(Type.String(), Type.String()), { description: 'Inline styles' }),
+    style: Type.Optional(Type.Record(Type.String(), Type.String(), { description: 'Inline styles' })),
     
     // Validation
     validationRules: Type.Array(DataFormValidationRule, { description: 'Field validation rules' }),
@@ -168,7 +168,7 @@ export const DataFormField = Type.Object({
         field: Type.String(),
         operator: Type.String(),
         value: Type.Unknown()
-    })), { description: 'Conditions for showing this field' }),
+    }), { description: 'Conditions for showing this field' })),
     
     // Compliance and audit
     complianceRequired: Type.Boolean({ description: 'Whether field requires compliance validation', default: false }),
@@ -176,7 +176,7 @@ export const DataFormField = Type.Object({
     encryptData: Type.Boolean({ description: 'Whether to encrypt field data at rest', default: false }),
     
     // Metadata
-    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown()), { description: 'Additional field metadata' }),
+    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown(), { description: 'Additional field metadata' })),
     helpText: Type.Optional(Type.String({ description: 'Extended help text' })),
     tooltipText: Type.Optional(Type.String({ description: 'Tooltip text' })),
     
@@ -186,7 +186,7 @@ export const DataFormField = Type.Object({
         endpoint: Type.Optional(Type.String()),
         query: Type.Optional(Type.String()),
         transform: Type.Optional(Type.String())
-    }), { description: 'External data source configuration' })
+    }, { description: 'External data source configuration' }))
 });
 
 export type DataFormField = Static<typeof DataFormField>;
@@ -206,7 +206,7 @@ export const DataFormSection = Type.Object({
         field: Type.String(),
         operator: Type.String(),
         value: Type.Unknown()
-    })), { description: 'Conditions for showing this section' }),
+    }), { description: 'Conditions for showing this section' })),
     cssClass: Type.Optional(Type.String({ description: 'Custom CSS class' })),
     order: Type.Number({ description: 'Section display order', default: 0 })
 });
@@ -224,7 +224,7 @@ export const DataFormConfig = Type.Object({
     
     // Form structure
     fields: Type.Array(DataFormField, { description: 'Form fields configuration' }),
-    sections: Type.Optional(Type.Array(DataFormSection), { description: 'Form sections configuration' }),
+    sections: Type.Optional(Type.Array(DataFormSection, { description: 'Form sections configuration' })),
     
     // Display configuration
     displayMode: Type.Enum(FormDisplayMode, { description: 'Form display mode', default: FormDisplayMode.FORM }),
@@ -238,7 +238,7 @@ export const DataFormConfig = Type.Object({
     allowDraft: Type.Boolean({ description: 'Allow saving as draft', default: true }),
     allowMultipleSubmissions: Type.Boolean({ description: 'Allow multiple submissions', default: false }),
     requiresApproval: Type.Boolean({ description: 'Whether submissions require approval', default: false }),
-    approvers: Type.Optional(Type.Array(Type.String()), { description: 'List of approver user IDs' }),
+    approvers: Type.Optional(Type.Array(Type.String(), { description: 'List of approver user IDs' })),
     
     // Validation configuration
     validateOnChange: Type.Boolean({ description: 'Validate fields on change', default: true }),
@@ -248,14 +248,14 @@ export const DataFormConfig = Type.Object({
     // Security and compliance
     encryptSubmissions: Type.Boolean({ description: 'Encrypt form submissions', default: false }),
     retentionPeriodDays: Type.Optional(Type.Number({ description: 'Data retention period in days' })),
-    complianceFrameworks: Type.Optional(Type.Array(Type.String()), { description: 'Applicable compliance frameworks' }),
+    complianceFrameworks: Type.Optional(Type.Array(Type.String(), { description: 'Applicable compliance frameworks' })),
     
     // Integration
     webhooks: Type.Optional(Type.Array(Type.Object({
         url: Type.String(),
         events: Type.Array(Type.String()),
         headers: Type.Optional(Type.Record(Type.String(), Type.String()))
-    })), { description: 'Webhook configurations' }),
+    }), { description: 'Webhook configurations' })),
     
     // Theming and customization
     theme: Type.Optional(Type.Object({
@@ -263,11 +263,11 @@ export const DataFormConfig = Type.Object({
         secondaryColor: Type.Optional(Type.String()),
         fontFamily: Type.Optional(Type.String()),
         customCSS: Type.Optional(Type.String())
-    }), { description: 'Form theme configuration' }),
+    }, { description: 'Form theme configuration' })),
     
     // Metadata
     tags: Type.Array(Type.String(), { description: 'Form tags for categorization' }),
-    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown()), { description: 'Additional form metadata' }),
+    metadata: Type.Optional(Type.Record(Type.String(), Type.Unknown(), { description: 'Additional form metadata' })),
     createdAt: Type.String({ format: 'date-time', description: 'Form creation timestamp' }),
     updatedAt: Type.String({ format: 'date-time', description: 'Form last update timestamp' }),
     createdBy: Type.String({ description: 'Form creator user ID' })
@@ -292,7 +292,7 @@ export const FormSubmissionData = Type.Object({
         fileType: Type.String(),
         uploadUrl: Type.String(),
         checksum: Type.Optional(Type.String())
-    })), { description: 'Uploaded files' }),
+    }), { description: 'Uploaded files' })),
     
     // Submission metadata
     status: Type.Enum(FormSubmissionStatus, { description: 'Submission status' }),
@@ -323,7 +323,7 @@ export const FormSubmissionData = Type.Object({
             decidedAt: Type.String({ format: 'date-time' }),
             comments: Type.Optional(Type.String())
         }))
-    }), { description: 'Approval workflow data' }),
+    }, { description: 'Approval workflow data' })),
     
     // Audit trail
     auditTrail: Type.Array(Type.Object({
@@ -341,7 +341,7 @@ export const FormSubmissionData = Type.Object({
         status: Type.Enum(SOPComplianceStatus),
         checkedAt: Type.String({ format: 'date-time' }),
         details: Type.Optional(Type.String())
-    })), { description: 'Compliance validation results' })
+    }), { description: 'Compliance validation results' }))
 });
 
 export type FormSubmissionData = Static<typeof FormSubmissionData>;
@@ -364,12 +364,12 @@ export const DataFormResult = Type.Object({
     validationPassed: Type.Boolean({ description: 'Whether all validation passed' }),
     
     // Collected data
-    collectedData: Type.Optional(Type.Record(Type.String(), Type.Unknown()), { description: 'Collected form data' }),
+    collectedData: Type.Optional(Type.Record(Type.String(), Type.Unknown(), { description: 'Collected form data' })),
     uploadedFiles: Type.Optional(Type.Array(Type.Object({
         fieldId: Type.String(),
         fileName: Type.String(),
         fileUrl: Type.String()
-    })), { description: 'Information about uploaded files' }),
+    }), { description: 'Information about uploaded files' })),
     
     // Validation results
     validationResults: Type.Array(Type.Object({
@@ -386,7 +386,7 @@ export const DataFormResult = Type.Object({
         framework: Type.String(),
         status: Type.Enum(SOPComplianceStatus),
         details: Type.Optional(Type.String())
-    })), { description: 'Detailed compliance results' }),
+    }), { description: 'Detailed compliance results' })),
     
     // Audit trail
     auditTrail: Type.Array(Type.Object({
@@ -450,13 +450,13 @@ export const DataFormError = Type.Object({
     message: Type.String({ description: 'Error message' }),
     code: Type.Optional(Type.String({ description: 'Error code' })),
     fieldId: Type.Optional(Type.String({ description: 'Field ID where error occurred' })),
-    details: Type.Optional(Type.Record(Type.String(), Type.Unknown()), { description: 'Error details' }),
+    details: Type.Optional(Type.Record(Type.String(), Type.Unknown(), { description: 'Error details' })),
     timestamp: Type.String({ format: 'date-time', description: 'When error occurred' }),
     recoverable: Type.Boolean({ description: 'Whether error is recoverable' }),
     retryable: Type.Boolean({ description: 'Whether operation can be retried' }),
     userMessage: Type.Optional(Type.String({ description: 'User-friendly error message' })),
-    technicalDetails: Type.Optional(Type.String({ description: 'Technical error details for debugging' })
-);
+    technicalDetails: Type.Optional(Type.String({ description: 'Technical error details for debugging' }))
+});
 
 export type DataFormError = Static<typeof DataFormError>;
 
@@ -509,3 +509,6 @@ export const FormAnalytics = Type.Object({
 });
 
 export type FormAnalytics = Static<typeof FormAnalytics>;
+
+// Re-export DataFormHelpers for backward compatibility
+export { DataFormHelpers } from '../utils/data-form-helpers';

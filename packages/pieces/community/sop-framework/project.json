@@ -10,7 +10,7 @@
       "options": {
         "outputPath": "dist/packages/pieces/community/sop-framework",
         "main": "packages/pieces/community/sop-framework/src/index.ts",
-        "tsConfig": "packages/pieces/community/sop-framework/tsconfig.lib.json",
+        "tsConfig": "packages/pieces/community/sop-framework/tsconfig.json",
         "assets": [
           "packages/pieces/community/sop-framework/*.md",
           "packages/pieces/community/sop-framework/package.json"
@@ -25,7 +25,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [

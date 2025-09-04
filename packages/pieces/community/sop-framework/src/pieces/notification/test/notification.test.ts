@@ -50,13 +50,15 @@ describe('Notification Piece', () => {
             variables: [
                 {
                     name: 'userName',
-                    value: undefined,
+                    value: {},
+                    defaultValue: '',
                     required: true,
                     sensitive: false
                 },
                 {
                     name: 'orderNumber',
-                    value: undefined,
+                    value: {},
+                    defaultValue: 0,
                     required: true,
                     sensitive: false
                 }
@@ -112,7 +114,21 @@ describe('Notification Piece', () => {
             retryConfig: {
                 maxAttempts: 3,
                 retryDelay: 300,
-                exponentialBackoff: true
+                exponentialBackoff: true,
+                retryChannels: []
+            },
+            scheduling: {
+                type: 'IMMEDIATE',
+                timezone: 'UTC'
+            },
+            batch: {
+                enabled: false,
+                size: 100,
+                delay: 1000
+            },
+            escalation: {
+                enabled: false,
+                levels: []
             },
             complianceSettings: {
                 frameworks: [ComplianceFramework.GDPR],
@@ -189,13 +205,13 @@ describe('Notification Piece', () => {
             
             const result = await validator.validateNotification(mockNotificationConfig, validationContext);
             
-            expect(result.isValid).toBe(true);
-            expect(result.errors).toHaveLength(0);
-            expect(result.templateValidation).toBeDefined();
-            expect(result.recipientValidation).toBeDefined();
-            expect(result.deliveryValidation).toBeDefined();
-            expect(result.complianceChecks).toHaveLength(1);
-            expect(result.complianceChecks[0].framework).toBe(ComplianceFramework.GDPR);
+            expect((result as any).isValid).toBe(true);
+            expect((result as any).errors).toHaveLength(0);
+            expect((result as any).templateValidation).toBeDefined();
+            expect((result as any).recipientValidation).toBeDefined();
+            expect((result as any).deliveryValidation).toBeDefined();
+            expect((result as any).complianceChecks).toHaveLength(1);
+            expect((result as any).complianceChecks[0].framework).toBe(ComplianceFramework.GDPR);
         });
         
         it('should detect missing required configuration fields', async () => {
@@ -217,10 +233,10 @@ describe('Notification Piece', () => {
             
             const result = await validator.validateNotification(invalidConfig, validationContext);
             
-            expect(result.isValid).toBe(false);
-            expect(result.errors.length).toBeGreaterThan(0);
-            expect(result.errors.some(e => e.code === 'MISSING_ID')).toBe(true);
-            expect(result.errors.some(e => e.code === 'NO_CHANNELS')).toBe(true);
+            expect((result as any).isValid).toBe(false);
+            expect((result as any).errors.length).toBeGreaterThan(0);
+            expect((result as any).errors.some(e => e.code === 'MISSING_ID')).toBe(true);
+            expect((result as any).errors.some(e => e.code === 'NO_CHANNELS')).toBe(true);
         });
         
         it('should validate template variables', async () => {
@@ -244,7 +260,7 @@ describe('Notification Piece', () => {
             
             const result = await validator.validateNotification(configWithMissingVars, validationContext);
             
-            expect(result.templateValidation?.missingVariables).toContain('missingVar');
+            expect((result as any).templateValidation?.missingVariables).toContain('missingVar');
         });
         
         it('should validate GDPR compliance', async () => {
@@ -273,7 +289,7 @@ describe('Notification Piece', () => {
             
             const result = await validator.validateNotification(nonCompliantConfig, validationContext);
             
-            const gdprCheck = result.complianceChecks.find(c => c.framework === ComplianceFramework.GDPR);
+            const gdprCheck = (result as any).complianceChecks.find(c => c.framework === ComplianceFramework.GDPR);
             expect(gdprCheck).toBeDefined();
             expect(gdprCheck!.status).toBe(SOPComplianceStatus.NON_COMPLIANT);
         });
@@ -299,7 +315,7 @@ describe('Notification Piece', () => {
             
             const result = await validator.validateNotification(configWithInvalidEmail, validationContext);
             
-            expect(result.recipientValidation?.invalidRecipients).toBeGreaterThan(0);
+            expect((result as any).recipientValidation?.invalidRecipients).toBeGreaterThan(0);
         });
     });
 
@@ -312,11 +328,11 @@ describe('Notification Piece', () => {
             
             const result = await NotificationHelpers.processTemplate(mockTemplate, variables);
             
-            expect(result.subject).toBe('Test Subject - John Doe');
-            expect(result.content).toContain('Hello John Doe');
-            expect(result.content).toContain('order #12345');
-            expect(result.variablesResolved).toBe(4); // 2 in subject + 2 in content
-            expect(result.missingVariables).toHaveLength(0);
+            expect((result as any).subject).toBe('Test Subject - John Doe');
+            expect((result as any).content).toContain('Hello John Doe');
+            expect((result as any).content).toContain('order #12345');
+            expect((result as any).variablesResolved).toBe(4); // 2 in subject + 2 in content
+            expect((result as any).missingVariables).toHaveLength(0);
         });
         
         it('should detect missing template variables', async () => {
@@ -327,8 +343,8 @@ describe('Notification Piece', () => {
             
             const result = await NotificationHelpers.processTemplate(mockTemplate, variables);
             
-            expect(result.missingVariables).toContain('orderNumber');
-            expect(result.variablesResolved).toBe(2); // Only userName resolved
+            expect((result as any).missingVariables).toContain('orderNumber');
+            expect((result as any).variablesResolved).toBe(2); // Only userName resolved
         });
         
         it('should calculate notification complexity', () => {
@@ -445,11 +461,11 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.notificationId).toBe(mockNotificationConfig.id);
-            expect(result.templateProcessed).toBe(true);
-            expect(result.variablesResolved).toBeGreaterThan(0);
-            expect(result.executionTime).toBeGreaterThan(0);
+            expect((result as any).success).toBe(true);
+            expect((result as any).notificationId).toBe(mockNotificationConfig.id);
+            expect((result as any).templateProcessed).toBe(true);
+            expect((result as any).variablesResolved).toBeGreaterThan(0);
+            expect((result as any).executionTime).toBeGreaterThan(0);
         });
         
         it('should handle validation mode', async () => {
@@ -458,9 +474,9 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.templateProcessed).toBe(true);
-            expect(result.metadata?.validationResults).toBeDefined();
+            expect((result as any).success).toBe(true);
+            expect((result as any).templateProcessed).toBe(true);
+            expect((result as any).metadata?.validationResults).toBeDefined();
         });
         
         it('should handle template processing mode', async () => {
@@ -469,10 +485,10 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.templateProcessed).toBe(true);
-            expect(result.variablesResolved).toBeGreaterThan(0);
-            expect(result.metadata?.templateProcessingResult).toBeDefined();
+            expect((result as any).success).toBe(true);
+            expect((result as any).templateProcessed).toBe(true);
+            expect((result as any).variablesResolved).toBeGreaterThan(0);
+            expect((result as any).metadata?.templateProcessingResult).toBeDefined();
         });
         
         it('should handle batch processing mode', async () => {
@@ -482,8 +498,8 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.notificationsProcessed).toBeGreaterThan(0);
+            expect((result as any).success).toBe(true);
+            expect((result as any).notificationsProcessed).toBeGreaterThan(0);
         });
         
         it('should handle scheduling mode', async () => {
@@ -493,9 +509,9 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.scheduledNotifications).toBeDefined();
-            expect(result.scheduledNotifications?.length).toBeGreaterThan(0);
+            expect((result as any).success).toBe(true);
+            expect((result as any).scheduledNotifications).toBeDefined();
+            expect((result as any).scheduledNotifications?.length).toBeGreaterThan(0);
         });
         
         it('should handle analytics generation mode', async () => {
@@ -504,9 +520,9 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.analytics).toBeDefined();
-            expect(result.analytics?.totalSent).toBeGreaterThan(0);
+            expect((result as any).success).toBe(true);
+            expect((result as any).analytics).toBeDefined();
+            expect((result as any).analytics?.totalSent).toBeGreaterThan(0);
         });
         
         it('should handle delivery tracking mode', async () => {
@@ -515,9 +531,9 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(true);
-            expect(result.analytics).toBeDefined();
-            expect(result.deliveryResults).toBeDefined();
+            expect((result as any).success).toBe(true);
+            expect((result as any).analytics).toBeDefined();
+            expect((result as any).deliveryResults).toBeDefined();
         });
         
         it('should handle errors gracefully', async () => {
@@ -527,9 +543,9 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             
             expect(result).toBeDefined();
-            expect(result.success).toBe(false);
-            expect(result.error).toBeDefined();
-            expect(result.complianceStatus).toBe(SOPComplianceStatus.NON_COMPLIANT);
+            expect((result as any).success).toBe(false);
+            expect((result as any).error).toBeDefined();
+            expect((result as any).complianceStatus).toBe(SOPComplianceStatus.NON_COMPLIANT);
         });
         
         it('should validate required properties', async () => {
@@ -557,8 +573,8 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             const executionTime = Date.now() - startTime;
             
-            expect(result.success).toBe(true);
-            expect(result.notificationsProcessed).toBe(2000); // 1000 recipients × 2 channels
+            expect((result as any).success).toBe(true);
+            expect((result as any).notificationsProcessed).toBe(2000); // 1000 recipients × 2 channels
             expect(executionTime).toBeLessThan(30000); // Should complete within 30 seconds
         });
         
@@ -582,9 +598,9 @@ describe('Notification Piece', () => {
             const result = await notificationAction.run(mockContext);
             const executionTime = Date.now() - startTime;
             
-            expect(result.success).toBe(true);
-            expect(result.templateProcessed).toBe(true);
-            expect(result.variablesResolved).toBe(100);
+            expect((result as any).success).toBe(true);
+            expect((result as any).templateProcessed).toBe(true);
+            expect((result as any).variablesResolved).toBe(100);
             expect(executionTime).toBeLessThan(5000); // Should complete within 5 seconds
         });
     });
@@ -622,9 +638,9 @@ describe('Notification Piece', () => {
             
             const result = await notificationAction.run(mockContext);
             
-            expect(result.success).toBe(true);
+            expect((result as any).success).toBe(true);
             // In a real implementation, sensitive data should be logged differently
-            expect(result.auditTrail).toBeDefined();
+            expect((result as any).auditTrail).toBeDefined();
         });
     });
 
@@ -644,8 +660,8 @@ describe('Notification Piece', () => {
             
             const result = await notificationAction.run(mockContext);
             
-            expect(result.complianceStatus).toBe(SOPComplianceStatus.NON_COMPLIANT);
-            const gdprResult = result.complianceResults?.find(r => r.framework === ComplianceFramework.GDPR);
+            expect((result as any).complianceStatus).toBe(SOPComplianceStatus.NON_COMPLIANT);
+            const gdprResult = (result as any).complianceResults?.find(r => r.framework === ComplianceFramework.GDPR);
             expect(gdprResult?.status).toBe(SOPComplianceStatus.NON_COMPLIANT);
         });
         
@@ -667,8 +683,8 @@ describe('Notification Piece', () => {
             
             const result = await notificationAction.run(mockContext);
             
-            expect(result.complianceResults).toBeDefined();
-            const canSpamResult = result.complianceResults?.find(r => r.framework === ComplianceFramework.CAN_SPAM);
+            expect((result as any).complianceResults).toBeDefined();
+            const canSpamResult = (result as any).complianceResults?.find(r => r.framework === ComplianceFramework.CAN_SPAM);
             expect(canSpamResult?.status).toBe(SOPComplianceStatus.NON_COMPLIANT);
         });
     });
@@ -677,11 +693,11 @@ describe('Notification Piece', () => {
         it('should maintain audit trail throughout execution', async () => {
             const result = await notificationAction.run(mockContext);
             
-            expect(result.auditTrail).toBeDefined();
-            expect(result.auditTrail.length).toBeGreaterThan(0);
+            expect((result as any).auditTrail).toBeDefined();
+            expect((result as any).auditTrail.length).toBeGreaterThan(0);
             
             // Check for specific audit events
-            const events = result.auditTrail.map(entry => entry.action);
+            const events = (result as any).auditTrail.map(entry => entry.action);
             expect(events).toContain('execution_started');
             expect(events).toContain('notification_processing_started');
             expect(events).toContain('notification_completed');
@@ -706,9 +722,9 @@ describe('Notification Piece', () => {
             
             const result = await notificationAction.run(mockContext);
             
-            expect(result.success).toBeDefined();
+            expect((result as any).success).toBeDefined();
             // Check for escalation events in audit trail
-            const escalationEvents = result.auditTrail.filter(entry => 
+            const escalationEvents = (result as any).auditTrail.filter(entry => 
                 entry.action === 'escalation_triggered'
             );
             // Note: Escalation might not trigger in test mode with high success rate

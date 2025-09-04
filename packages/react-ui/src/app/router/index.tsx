@@ -75,6 +75,7 @@ import {
   projectSettingsRoutes,
   TokenCheckerWrapper,
 } from './project-route-wrapper';
+import { createSOPRoutes } from './sop-routes';
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -143,6 +144,8 @@ const routes = [
       </DashboardContainer>
     ),
   }),
+  // SOP Routes
+  ...createSOPRoutes(),
   {
     path: '/chats/:flowId',
     element: (

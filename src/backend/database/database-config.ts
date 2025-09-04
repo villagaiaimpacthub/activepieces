@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
+import { SOP_ENTITIES } from './entities';
 
 // Load environment variables
 config();
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME || 'activepieces_sop',
   synchronize: process.env.NODE_ENV === 'development',
   logging: process.env.NODE_ENV === 'development' ? 'all' : ['error'],
-  entities: ['src/backend/database/entities/*.ts'],
+  entities: SOP_ENTITIES,
   migrations: ['src/backend/database/migrations/*.ts'],
   subscribers: ['src/backend/database/subscribers/*.ts'],
   cli: {

@@ -9,11 +9,14 @@ import {
     DataFormField,
     DataFormConfig,
     DataFormFieldType,
+    ValidationRuleType,
     FormSubmissionData,
     DataFormResult,
     FormProcessingMode,
     DataFormError,
-    DataFormErrorType
+    DataFormErrorType,
+    FormDisplayMode,
+    FormSubmissionStatus
 } from '../common/data-form-types';
 import { SOPExecutionContext, SOPComplianceStatus } from '../../../../types/sop-types';
 import { nanoid } from 'nanoid';
@@ -97,7 +100,7 @@ export class DataFormHelpers {
             description: description || '',
             version: '1.0.0',
             fields: [],
-            displayMode: 'FORM',
+            displayMode: FormDisplayMode.FORM,
             layout: {
                 columns: 1,
                 spacing: 'medium',
@@ -161,10 +164,11 @@ export class DataFormHelpers {
             field.maxLength = maxLength;
             field.validationRules.push({
                 id: nanoid(),
-                type: 'MAX_LENGTH',
+                type: ValidationRuleType.MAX_LENGTH,
                 value: maxLength,
                 message: `${label} cannot exceed ${maxLength} characters`,
-                severity: 'error'
+                severity: 'error',
+                conditions: []
             });
         }
         
@@ -180,9 +184,10 @@ export class DataFormHelpers {
         
         field.validationRules.push({
             id: nanoid(),
-            type: 'EMAIL_FORMAT',
+            type: ValidationRuleType.EMAIL_FORMAT,
             message: `${label} must be a valid email address`,
-            severity: 'error'
+            severity: 'error',
+            conditions: []
         });
         
         return field;
@@ -197,9 +202,10 @@ export class DataFormHelpers {
         
         field.validationRules.push({
             id: nanoid(),
-            type: 'PHONE_FORMAT',
+            type: ValidationRuleType.PHONE_FORMAT,
             message: `${label} must be a valid phone number`,
-            severity: 'error'
+            severity: 'error',
+            conditions: []
         });
         
         return field;
@@ -234,10 +240,11 @@ export class DataFormHelpers {
         if (minDate || maxDate) {
             field.validationRules.push({
                 id: nanoid(),
-                type: 'DATE_RANGE',
-                value: { min: minDate, max: maxDate },
+                type: ValidationRuleType.DATE_RANGE,
+                value: [minDate, maxDate],
                 message: `${label} must be within the specified date range`,
-                severity: 'error'
+                severity: 'error',
+                conditions: []
             });
         }
         
@@ -260,20 +267,22 @@ export class DataFormHelpers {
         if (config.allowedTypes) {
             field.validationRules.push({
                 id: nanoid(),
-                type: 'FILE_TYPE',
+                type: ValidationRuleType.FILE_TYPE,
                 value: config.allowedTypes,
                 message: `${label} must be one of the allowed file types: ${config.allowedTypes.join(', ')}`,
-                severity: 'error'
+                severity: 'error',
+                conditions: []
             });
         }
         
         // Add file size validation
         field.validationRules.push({
             id: nanoid(),
-            type: 'FILE_SIZE',
+            type: ValidationRuleType.FILE_SIZE,
             value: field.maxFileSize,
             message: `${label} file size cannot exceed ${this.formatFileSize(field.maxFileSize)}`,
-            severity: 'error'
+            severity: 'error',
+            conditions: []
         });
         
         return field;
@@ -512,7 +521,7 @@ export class DataFormHelpers {
             formId: formConfig.id,
             formVersion: formConfig.version,
             data: submittedData,
-            status: 'SUBMITTED',
+            status: FormSubmissionStatus.SUBMITTED,
             submittedBy,
             submittedAt: now,
             validationResults: validationResults.map(result => ({

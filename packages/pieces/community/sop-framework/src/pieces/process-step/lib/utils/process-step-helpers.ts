@@ -260,11 +260,8 @@ export class ProcessStepExecutor {
 
         // Calculate efficiency metrics
         if (metrics.duration) {
-            stats.performance = {
-                ...stats.performance,
-                executionEfficiency: metrics.processingTime ? (metrics.processingTime / metrics.duration) : 0,
-                validationOverhead: metrics.validationTime ? (metrics.validationTime / metrics.duration) : 0
-            };
+            (stats.performance as any).executionEfficiency = metrics.processingTime ? (metrics.processingTime / metrics.duration) : 0;
+            (stats.performance as any).validationOverhead = metrics.validationTime ? (metrics.validationTime / metrics.duration) : 0;
         }
 
         return stats;
